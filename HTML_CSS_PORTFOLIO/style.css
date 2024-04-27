@@ -150,7 +150,7 @@ a:hover {
 
 section {
   padding-top: 4vh;
-  height: 96vh;
+  height: 80vh;
   margin: 0 10rem;
   box-sizing: border-box;
   min-height: fit-content;
@@ -171,6 +171,7 @@ section {
 
 .section__pic-container {
   display: flex;
+  border-radius: 50%;
   height: 400px;
   width: 400px;
   margin: auto 0;
@@ -366,8 +367,8 @@ article .icon {
 
 .project-img {
   border-radius: 2rem;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
 }
 
 .project-title {
@@ -429,4 +430,8 @@ footer {
 
 footer p {
   text-align: center;
+}
+div.section__pic-container > img[src='./assets/profile-pic.jpg'] {
+  /* Your styles here */
+  border-radius: 200px; /* Example: Apply round corners */
 }
