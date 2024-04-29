@@ -78,12 +78,9 @@
         </li>
       </ul>
     </div>
-    <br /><br />
-    <br /><br />
-    <br /><br />
   </div>
   <form class="message-form">
-    {%csrf_token%}
+    {% csrf_token %}
     <div class="input-group">
       <input
         type="text"
@@ -97,4 +94,33 @@
   </form>
 </div>
 
+<script>
+  const messagesList = document.querySelector('.messages-list');
+  const messageForm = document.querySelector('.message-form');
+  const messageInput = document.querySelector('.message-input');
+
+  messageForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    if (message.length === 0) {
+      return;
+    }
+
+    const messageItem = document.createElement('li');
+    messageItem.classList.add('message', 'sent');
+    messageItem.innerHTML = `
+      <div class="message-text">
+        <div class="message-sender">
+          <b>You</b>
+        </div>
+        <div class="message-content">
+          ${message}
+        </div>
+      </div>`;
+    messagesList.appendChild(messageItem);
+
+    messageInput.value = '';
+  });
+</script>
 {% endblock %}
