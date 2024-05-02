@@ -5,9 +5,13 @@
   <div class="grid grid-cols-3 gap-3">
     {% for item in items %}
     <div>
-      <a href="#">
+      <a href="{% url 'item:detail' item.id %}">
         <div>
-          <img src="{{ item.images.url }}" class="rounded-t-xl" alt="{{ item.name }}" />
+          {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+          {% else %}
+            <p>No image available</p>
+          {% endif %}
         </div>
 
         <div class="p-6 bg-white rounded-b-xl">
