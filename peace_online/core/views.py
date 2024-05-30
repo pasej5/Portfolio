@@ -25,7 +25,7 @@ def signup(request):
             # check if the form has correct values and no errors
             form.save() # then the user will be created in the database
             return redirect('/login')
-        else:
+    else:
             form = SignupForm()
     
     
