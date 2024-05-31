@@ -19,7 +19,7 @@ def new(request):
         
         form = NewItemForm(request.POST, request.FILES)
         if form.is_valid():
-            item= form.save(commit=False)# this will create a database but not save it
+            item = form.save(commit=False)# this will create a database but not save it
             item.created_by = request.user # this time the user is alwaya authenticated because we have the @login required
             item.save()
             
