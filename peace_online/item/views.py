@@ -1,5 +1,7 @@
+from django.http import Http404
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 
 from .form import NewItemForm
 from .models import Item
@@ -29,4 +31,13 @@ def new(request):
         
     context = {'form': form, 'title': 'New item'}
     return render(request, 'item/form.html', context)
+
+@login_required
+def delete(request, pk): #pk will be the id of the item we want to delete
+    try:
+        item = Item.objects.get(Item, pk=pk, created_by=request.user) #get the item from the database, pk=pk from the url, created_by=request.user= this is for you to get only the items you created
+    except Item.DoesNotExixt:
+        raise Http404("Item does not exist or you do not have permission to delete it.")
+    item.delete() # to delete
     
+    return redirect('dashboard:index')
