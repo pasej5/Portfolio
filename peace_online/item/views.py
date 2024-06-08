@@ -2,7 +2,7 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .form import NewItemForm
+from .forms import NewItemForm
 from .models import Item
 
 # Create your views here.
