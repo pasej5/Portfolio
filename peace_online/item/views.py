@@ -2,7 +2,7 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import NewItemForm
+from .forms import NewItemForm, EditItemForm
 from .models import Item
 
 # Create your views here.
@@ -34,6 +34,27 @@ def new(request):
         
     context = {'form': form, 'title': 'New item'}
     return render(request, 'item/form.html', context)
+
+
+@login_required
+def edit(request, pk):
+    try:
+        item = Item.objects.get(pk=pk, created_by=request.user) #get the item from the database, pk=pk from the url, created_by=request.user= this is for you to get only the items you created
+    except Item.DoesNotExixt:
+        raise Http404("Item does not exist or you do not have permission to delete it.")
+    if request.method =="POST":
+        
+        form = EditItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            
+            return redirect('item:detail', pk=item.id) #redirect the user back to the page just created
+    else:
+        form = EditItemForm(instance=item)
+        
+    context = {'form': form, 'title': 'Edit item'}
+    return render(request, 'item/form.html', context)
+
 
 @login_required
 def delete(request, pk): #pk will be the id of the item we want to delete
