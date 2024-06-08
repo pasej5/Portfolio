@@ -43,8 +43,7 @@ def edit(request, pk):
     except Item.DoesNotExixt:
         raise Http404("Item does not exist or you do not have permission to delete it.")
     if request.method =="POST":
-        
-        form = EditItemForm(request.POST, request.FILES)
+        form = EditItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
             
