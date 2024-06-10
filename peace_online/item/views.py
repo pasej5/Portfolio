@@ -8,13 +8,17 @@ from .models import Category, Item
 
 def items(request): # for search functionality
     query = request.GET.get('query', '') #this query comes from <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find your item here"> in the templates
-    categories = Catergory.objects.all() # get all the categories in the database
-    items = Item.objects.filter(is_sold=False) #get all the items in the database that is not sold 
+    category_id = request.GET.get('category', 0)
+    categories = Category.objects.all() # get all the categories in the database
+    items = Item.objects.filter(is_sold=False) #get all the items in the database that is not sold
+    
+    if category_id:
+         items = items.filter(category_id=category_id)
     
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query)) # filter query if there is any query
     
-    context = {'items': items, 'query': query}
+    context = {'items': items, 'query': query, 'categories': categories, 'category_id': int(category_id)}
     return render(request, 'item/items.html')
 
 # Create your views here.
@@ -26,7 +30,7 @@ def detail(request, pk):
     
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
     
-    context = {'item': item, 'related_items': related_items, 'categories': categories}
+    context = {'item': item, 'related_items': related_items}
     return render(request, 'item/detail.html', context)
 
 
