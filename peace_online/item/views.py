@@ -5,6 +5,12 @@ from django.shortcuts import render, redirect
 from .forms import NewItemForm, EditItemForm
 from .models import Item
 
+def items(request):
+    items = Item.objects.filter(is_sold=False)
+    
+    context = {'items': items}
+    return render(request, 'item/items.html')
+
 # Create your views here.
 def detail(request, pk):
     try:
