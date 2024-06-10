@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from .forms import NewItemForm, EditItemForm
 from .models import Item
 
-def items(request):
-    items = Item.objects.filter(is_sold=False)
+def items(request): # for search functionality
+    items = Item.objects.filter(is_sold=False) #get all the items in the database that is not sold 
     
     context = {'items': items}
     return render(request, 'item/items.html')
@@ -46,7 +46,7 @@ def new(request):
 def edit(request, pk):
     try:
         item = Item.objects.get(pk=pk, created_by=request.user) #get the item from the database, pk=pk from the url, created_by=request.user= this is for you to get only the items you created
-    except Item.DoesNotExixt:
+    except Item.DoesNotExist:
         raise Http404("Item does not exist or you do not have permission to delete it.")
     if request.method =="POST":
         form = EditItemForm(request.POST, request.FILES, instance=item)
@@ -65,7 +65,7 @@ def edit(request, pk):
 def delete(request, pk): #pk will be the id of the item we want to delete
     try:
         item = Item.objects.get(pk=pk, created_by=request.user) #get the item from the database, pk=pk from the url, created_by=request.user= this is for you to get only the items you created
-    except Item.DoesNotExixt:
+    except Item.DoesNotExist:
         raise Http404("Item does not exist or you do not have permission to delete it.")
     item.delete() # to delete
     
