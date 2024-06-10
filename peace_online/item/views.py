@@ -6,9 +6,13 @@ from .forms import NewItemForm, EditItemForm
 from .models import Item
 
 def items(request): # for search functionality
+    query = request.GET.get('query', '') #this query comes from <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find your item here"> in the templates
     items = Item.objects.filter(is_sold=False) #get all the items in the database that is not sold 
     
-    context = {'items': items}
+    if query:
+        items = items.filter(name__icontains=query) # filter query if there is any query
+    
+    context = {'items': items, 'query': query}
     return render(request, 'item/items.html')
 
 # Create your views here.
