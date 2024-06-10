@@ -1,16 +1,18 @@
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q # this makes it easy to search in multiple fields
 from django.shortcuts import render, redirect
 
 from .forms import NewItemForm, EditItemForm
-from .models import Item
+from .models import Category, Item
 
 def items(request): # for search functionality
     query = request.GET.get('query', '') #this query comes from <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find your item here"> in the templates
+    categories = Catergory.objects.all() # get all the categories in the database
     items = Item.objects.filter(is_sold=False) #get all the items in the database that is not sold 
     
     if query:
-        items = items.filter(name__icontains=query) # filter query if there is any query
+        items = items.filter(Q(name__icontains=query) | Q(description__icontains=query)) # filter query if there is any query
     
     context = {'items': items, 'query': query}
     return render(request, 'item/items.html')
@@ -24,7 +26,7 @@ def detail(request, pk):
     
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
     
-    context = {'item': item, 'related_items': related_items}
+    context = {'item': item, 'related_items': related_items, 'categories': categories}
     return render(request, 'item/detail.html', context)
 
 
