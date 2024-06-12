@@ -15,3 +15,20 @@ def new_conversation(request, item_pk): # primary key here is for the Item
         return redirect('dashboard:index')
     
     conversations = Conversation.objects.filter(item=item).filter(members__in=request.user.id)
+    
+    if conversations:
+        pass # redirect to conversation
+    
+    if request.method == 'POST':
+        form = ConvesationMessageForm(request.POST)
+        
+        if form.is_valid():
+            conversation = Conversation.objects.create(item=item)
+            conversation.members.add(request.user)
+            conversation.members.add(item.created_by)
+            conversation.save()
+            
+            conversation_message = form.save(commit=False)
+            conversation_message.conversation =conversation
+            
+            conversation_message.created_by = request.user
