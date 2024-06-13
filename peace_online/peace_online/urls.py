@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('items/', include('item.urls', namespace='items')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
+    path('inbox/', include('conversation.urls', namespace='conversation')),
     path('admin/', admin.site.urls),
 
 ]

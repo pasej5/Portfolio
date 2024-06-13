@@ -12,10 +12,12 @@ class Conversation(models.Model):
         ordering = ('-modified_at',)
         
 class ConversationMessage(models.Model): # we cant use message because it will crash with the in built django function
-    conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
+    conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE) 
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True) # this shows us when this was created
     created_by = models.ForeignKey(User, related_name='created_messages', on_delete=models.CASCADE)
+    
+    # always update the data base if you make changes in this file 
 
     
     

@@ -1,6 +1,7 @@
-{% extends 'core/base.html' %} {% block content %}
-<h1 class="mb-6 text-3xl">{{ title }}</h1>
-<form method="post" action="." enctype="multipart/form-data">
+{% extends "core/base.html" %} {% block content %}
+<h1 class="mb-6 text-3xl">New Conversation</h1>
+
+<form method="post" action=".">
   {% csrf_token %}
   <div class="space-y-4">{{ form.as_p }}</div>
 
@@ -14,7 +15,7 @@
   <button
     class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text white"
   >
-    Send
+    Submit
   </button>
 </form>
 {% endblock %}

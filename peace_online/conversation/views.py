@@ -11,7 +11,7 @@ def new_conversation(request, item_pk): # primary key here is for the Item
     if item.created_by == request.user:
         return redirect('dashboard:index')
     
-    conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id])
+    conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id]) # get all the conversation where you are memmber, so the request.user.id checks if the id is one of the members in members_in
     
     if conversations.exists():
         return redirect('conversation:detail', pk=conversations.first().pk)  # Assuming there's a conversation detail view
