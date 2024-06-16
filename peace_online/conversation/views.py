@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 
@@ -5,6 +6,7 @@ from item.models import Item
 from .forms import ConversationMessageForm
 from .models import Conversation
 
+@login_required
 def new_conversation(request, item_pk): # primary key here is for the Item
     item = get_object_or_404(Item, pk=item_pk)
     
@@ -37,3 +39,10 @@ def new_conversation(request, item_pk): # primary key here is for the Item
         
     context = {'form': form}
     return render(request, 'conversation/new.html', context)
+
+@login_required
+def inbox(request):
+    conversations = Conversation.objects.filter(members__in=[request.user.id]) # get all the conversation where you are memmber, so the request.user.id checks if the id is one of the members in members_in
+    
+    context = {'conversations': conversations}
+    return render(request, 'conversation/inbox.html')
