@@ -14,15 +14,16 @@ def new_conversation(request, item_pk): # primary key here is for the Item
     conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id]) # get all the conversation where you are memmber, so the request.user.id checks if the id is one of the members in members_in
     
     if conversations.exists():
-        return redirect('conversation:detail', pk=conversations.first().pk)  # Assuming there's a conversation detail view
+        pass
+        # return redirect('conversation:detail', pk=conversations.first().pk)  # Assuming there's a conversation detail view
     
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
         
-        if form.is_valid():
+        if form.is_valid(): # if contact field is filled out correctly
             conversation = Conversation.objects.create(item=item)
-            conversation.members.add(request.user)
-            conversation.members.add(item.created_by)
+            conversation.members.add(request.user) # adding the current user to the members list
+            conversation.members.add(item.created_by) # adding the owner to the members list
             conversation.save()
             
             conversation_message = form.save(commit=False)
